@@ -1,0 +1,29 @@
+name: Bug report
+description: Report a reproducible problem in Morrow.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Please do not include private trip details or personal data in an issue.
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Include the screen and actions that led to the problem.
+      placeholder: "1. Open Explore...\n2. Select..."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and version
+      placeholder: "e.g. Chrome 130 on Windows 11"
+    validations:
+      required: true

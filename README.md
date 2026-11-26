@@ -1,22 +1,35 @@
 # Morrow
 
-### Find a little room to roam.
+<p align="center">
+  <img src="assets/morrow-logo.svg" alt="Morrow" width="260">
+</p>
+
+<p align="center"><strong>Find a little room to roam.</strong><br>A local-first weekend escape planner.</p>
+
+<p align="center">
+  <a href="https://github.com/sandipsahofficial/MORROW-AI/actions/workflows/site.yml"><img src="https://github.com/sandipsahofficial/MORROW-AI/actions/workflows/site.yml/badge.svg?branch=main" alt="Validate and deploy workflow"></a>
+  <a href="https://github.com/sandipsahofficial/MORROW-AI/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-315C4C.svg" alt="MIT License"></a>
+  <a href="#technology"><img src="https://img.shields.io/badge/JavaScript-Vanilla-F1D58A.svg" alt="Vanilla JavaScript"></a>
+  <a href="#run-locally"><img src="https://img.shields.io/badge/Build-none-315C4C.svg" alt="No build step"></a>
+</p>
+
+![Morrow overview on a mobile viewport](assets/morrow-overview.png)
 
 **Morrow 3.0** is a polished, local-first weekend escape planner. Explore destinations, shape a trip, and keep the details together in one responsive browser experience.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-315C4C.svg)](https://github.com/sandipsahofficial/MORROW-AI/blob/main/LICENSE)
-[![Vanilla JavaScript](https://img.shields.io/badge/JavaScript-Vanilla-F1D58A.svg)](#technology)
-[![No build step](https://img.shields.io/badge/Build-none-315C4C.svg)](#run-locally)
-
 > **Privacy-first prototype:** trip and preference data stays in this browser. Optional public services are clearly identified; there is no Morrow account, backend, or paid API.
 
-**Contents:** [Features](#features) · [Run locally](#run-locally) · [Demo](#demo-morrow-30) · [Architecture](#project-structure) · [Privacy](#local-data-and-reset) · [Verification](#verification)
+**Contents:** [Features](#features) · [Run locally](#run-locally) · [Demo](#demo-morrow-30) · [Architecture](ARCHITECTURE.md) · [Contributing](CONTRIBUTING.md) · [Privacy](#local-data-and-reset) · [Verification](#verification)
 
 Morrow is built with semantic HTML, modern CSS, and plain JavaScript. No build step, package installation, sign-in, or paid service is required.
 
 ## Run locally
 
 Open `index.html` in a modern browser, or serve the project folder with VS Code Live Server or another static web server. An HTTP origin is recommended for browser storage and optional network integrations. Fonts, destination photography, maps, weather, and nearby-place search need internet access; core local interactions do not.
+
+### GitHub Pages
+
+The `Validate and deploy Morrow` GitHub Actions workflow checks both JavaScript files and publishes the static app from `main`. To enable the first deployment, open **Settings → Pages → Build and deployment** in the repository and set **Source** to **GitHub Actions**. The project site URL is `https://sandipsahofficial.github.io/MORROW-AI/`; use the workflow badge above to check deployment status.
 
 ## Features
 
@@ -83,6 +96,9 @@ For the original trip-planning flow, see [Suggested presentation](#suggested-pre
 ├── app.js           # Morrow 2.0 application, routing, and shared trip state
 ├── morrow3.js       # Morrow 3.0 local-first features and integrations
 ├── styles.css       # Design system, responsive screens, themes, and print styles
+├── assets/          # Morrow logo, favicon, and README overview image
+├── .github/         # CI/Pages workflow and issue/PR templates
+├── CONTRIBUTING.md  # Local development and contribution guide
 ├── ARCHITECTURE.md  # Architecture, requirements, and implementation status
 ├── README.md        # Setup, product guide, demo, and verification notes
 └── LICENSE          # MIT license
@@ -124,3 +140,7 @@ Morrow 2.0 browser checks covered trip creation/editing and date validation, leg
 Group-form submission and its vote/suggestion/expense actions, journal CRUD and photo limits, finance export/calculations, notifications, mobile layout, and complete Morrow 2.0 regression were not fully re-verified in this implementation pass. This project has no automated test runner; those checks remain manual.
 
 There is no automated test framework configured in this standalone project. PDF output uses the browser's print dialog; no PDF package is bundled. Native sharing depends on browser support.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for local setup, checks, and pull request guidance. GitHub Actions runs syntax checks for `app.js` and `morrow3.js` on pushes and pull requests.

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 112" role="img" aria-labelledby="title">
+  <title id="title">Morrow</title>
+  <rect x="4" y="12" width="88" height="88" rx="26" fill="#315c4c"/>
+  <path d="M22 73.5 43.8 35l13.6 22 8.5-13.6L86 73.5H22Z" fill="#f3f5ef"/>
+  <path d="m32 73.5 14.1-23.4 10.6 17 8.5-13.6 11.1 20H32Z" fill="#a9c5b2"/>
+  <text x="116" y="79" fill="#1e3028" font-family="Manrope, DM Sans, Arial, sans-serif" font-size="66" font-weight="800" letter-spacing="-4">morrow<tspan fill="#6a927a">.</tspan></text>
+</svg>
