@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f6f7f4">
+  <meta name="description" content="Morrow helps you find a little room to roam. Explore thoughtful weekend escapes and help us make planning better.">
+  <title>Morrow — Find a little room to roam</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Main navigation">
+      <a class="brand" href="#home" data-route="home" aria-label="Morrow home">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M4 23.5 12.2 9l5.1 8.3 3.2-5.1L28 23.5H4Z"/><path d="m8 23.5 5.3-8.8 4 6.4 3.2-5.1 4.2 7.5"/></svg></span>
+        <span class="brand-name">morrow<span>.</span></span>
+      </a>
+      <div class="sidebar-label">YOUR SPACE</div>
+      <nav class="primary-nav">
+        <button class="nav-link active" data-route="home"><span class="nav-icon">⌂</span><span>Overview</span></button>
+        <button class="nav-link" data-route="explore"><span class="nav-icon">⌕</span><span>Explore</span><span class="nav-count" id="explore-count">6</span></button>
+        <button class="nav-link" data-route="trips"><span class="nav-icon">▣</span><span>My trips</span><span class="nav-count" id="trip-count">0</span></button>
+        <button class="nav-link" data-route="saved"><span class="nav-icon">♡</span><span>Saved places</span><span class="nav-count saved-count">0</span></button>
+        <button class="nav-link" data-route="compare"><span class="nav-icon">⇄</span><span>Compare places</span></button>
+      </nav>
+      <div class="sidebar-label secondary-label">YOUR MORROW</div>
+      <nav class="primary-nav">
+        <button class="nav-link" data-route="testing"><span class="nav-icon">✳</span><span>Prototype test</span><span class="nav-new">NEW</span></button>
+      </nav>
+      <details class="tool-nav">
+        <summary class="sidebar-label">MORROW 3.0 TOOLS</summary>
+        <nav class="primary-nav">
+          <button class="nav-link" data-route="assistant"><span class="nav-icon">✳</span><span>Travel assistant</span></button>
+          <button class="nav-link" data-route="smart-plan"><span class="nav-icon">☷</span><span>Smart itinerary</span></button>
+          <button class="nav-link" data-route="weather"><span class="nav-icon">☼</span><span>Weather</span></button>
+          <button class="nav-link" data-route="map"><span class="nav-icon">⌖</span><span>Map explorer</span></button>
+          <button class="nav-link" data-route="groups"><span class="nav-icon">♧</span><span>Group trips</span></button>
+          <button class="nav-link" data-route="checklist"><span class="nav-icon">✓</span><span>Checklists</span></button>
+          <button class="nav-link" data-route="journal"><span class="nav-icon">▤</span><span>Travel journal</span></button>
+          <button class="nav-link" data-route="finance"><span class="nav-icon">$</span><span>Money insights</span></button>
+        </nav>
+      </details>
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-note">
+        <span class="note-sparkle">✳</span>
+        <p>A little time away can change everything.</p>
+        <span class="note-caption">YOUR NEXT CHAPTER STARTS HERE</span>
+      </div>
+      <button class="profile-button" data-action="profile">
+        <span class="avatar">S</span><span class="profile-copy"><strong>Sam Taylor</strong><small>Weekend wanderer</small></span><span class="profile-dots">···</span>
+      </button>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="breadcrumbs"><span>YOUR SPACE</span><span class="crumb-slash">/</span><strong id="breadcrumb-current">Overview</strong></div>
+        <div class="topbar-actions">
+          <button class="icon-button history-button" data-action="back" aria-label="Go back" title="Go back">←</button>
+          <button class="icon-button history-button" data-action="forward" aria-label="Go forward" title="Go forward">→</button>
+        <button class="icon-button" data-action="theme" aria-label="Toggle light and dark theme" title="Toggle theme">☾</button>
+          <span class="topbar-divider"></span>
+          <button class="icon-button notification-button" data-action="notifications" aria-label="Notifications">♧<span class="notification-dot"></span></button>
+          <button class="topbar-avatar" data-action="profile" aria-label="Open profile">S</button>
+        </div>
+      </header>
+
+      <div class="mobile-brand"><a class="brand" href="#home" data-route="home"><span class="brand-mark"><svg viewBox="0 0 32 32"><path d="M4 23.5 12.2 9l5.1 8.3 3.2-5.1L28 23.5H4Z"/><path d="m8 23.5 5.3-8.8 4 6.4 3.2-5.1 4.2 7.5"/></svg></span><span class="brand-name">morrow<span>.</span></span></a><div><button class="icon-button" data-action="theme" aria-label="Toggle theme">☾</button><button class="icon-button" data-action="profile" aria-label="Open profile">S</button></div></div>
+
+      <section class="view active" id="view-home" aria-labelledby="home-title">
+        <div class="greeting-row">
+          <div><p class="eyebrow"><span class="eyebrow-dot"></span> <span id="today-label"></span></p><h1 id="home-title">A little room <em>to roam.</em></h1><p class="intro-copy"><span id="greeting-text">Good morning</span>, Sam. Somewhere lovely is closer than you think.</p></div>
+          <button class="button button-dark" data-route="explore"><span>Find your next escape</span><span class="button-arrow">↗</span></button>
+        </div>
+
+        <div class="hero-card">
+          <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1800&q=85" alt="Quiet alpine lake reflecting a mountain range at sunrise">
+          <div class="hero-scrim"></div>
+          <div class="hero-content">
+            <span class="hero-kicker"><span class="live-dot"></span> YOUR WEEKEND, REIMAGINED</span>
+            <h2>Trade the familiar<br>for <em>somewhere new.</em></h2>
+            <p>Thoughtful little escapes, picked just for you.</p>
+            <button class="button button-light" data-route="explore">Explore nearby <span class="button-arrow">↗</span></button>
+          </div>
+          <div class="hero-caption">A GOOD PLACE TO BEGIN</div>
+          <span class="hero-location">DOLOMITES, ITALY · 2 NIGHTS</span>
+        </div>
+
+        <div class="section-heading">
+          <div><p class="eyebrow">A GOOD PLACE TO START</p><h2>Made for your kind of weekend</h2></div>
+          <button class="text-link" data-route="explore">See all escapes <span>→</span></button>
+        </div>
+        <div class="category-grid">
+          <button class="category-card category-coast" data-action="category" data-category="Coast"><span class="category-icon">〰</span><span class="category-meta">01 / SLOW DOWN</span><strong>Coastal quiet</strong><span class="category-arrow">↗</span></button>
+          <button class="category-card category-woods" data-action="category" data-category="Cabin"><span class="category-icon">♧</span><span class="category-meta">02 / GET OUTSIDE</span><strong>Cabin country</strong><span class="category-arrow">↗</span></button>
+          <button class="category-card category-city" data-action="category" data-category="City"><span class="category-icon">⌂</span><span class="category-meta">03 / FIND YOUR BUZZ</span><strong>Little city breaks</strong><span class="category-arrow">↗</span></button>
+        </div>
+
+        <section class="analytics-section">
+          <div class="section-heading"><div><p class="eyebrow">YOUR TRAVEL, AT A GLANCE</p><h2>A little look at your plans</h2></div><button class="text-link" data-route="trips">Your trips <span>→</span></button></div>
+          <div class="analytics-cards">
+            <article class="analytics-card"><span class="analytics-icon">♡</span><strong id="stat-saved">0</strong><span>PLACES SAVED</span></article>
+            <article class="analytics-card"><span class="analytics-icon">▣</span><strong id="stat-trips">0</strong><span>TRIPS PLANNED</span></article>
+            <article class="analytics-card"><span class="analytics-icon">↗</span><strong id="stat-upcoming">0</strong><span>UPCOMING</span></article>
+            <article class="analytics-card"><span class="analytics-icon">$</span><strong id="stat-budget">$0</strong><span>ESTIMATED TOTAL</span></article>
+            <article class="analytics-card analytics-category"><span class="analytics-icon">✳</span><strong id="stat-category">—</strong><span>FAVORITE TRIP TYPE</span></article>
+          </div>
+          <div class="recent-places panel"><div class="panel-heading"><div><p class="eyebrow">PICK UP WHERE YOU LEFT OFF</p><h3>Recently explored</h3></div><button class="text-link" data-route="explore">Explore more →</button></div><div id="recently-viewed" class="recent-list"></div></div>
+        </section>
+
+        <section class="m3-dashboard-grid">
+          <article class="panel dashboard-widget"><div class="panel-heading"><div><p class="eyebrow">A THOUGHTFUL PLACE TO START</p><h3>Picked for your kind of trip</h3></div><button class="text-link" data-route="explore">Explore →</button></div><div id="dashboard-recommendations"></div></article>
+          <article class="panel dashboard-widget"><div class="panel-heading"><div><p class="eyebrow">READY WHEN YOU ARE</p><h3>Trip preparation</h3></div><button class="text-link" data-route="checklist">Checklists →</button></div><div id="dashboard-checklist"></div></article>
+          <article class="panel dashboard-widget"><div class="panel-heading"><div><p class="eyebrow">LITTLE MOMENTS, KEPT</p><h3>From your journal</h3></div><button class="text-link" data-route="journal">Journal →</button></div><div id="dashboard-journal"></div></article>
+          <article class="panel dashboard-widget"><div class="panel-heading"><div><p class="eyebrow">A USEFUL LITTLE NUDGE</p><h3>Travel insight</h3></div><button class="text-link" data-route="finance">Money insights →</button></div><div id="dashboard-insight"></div></article>
+        </section>
+
+        <div class="bottom-grid">
+          <section class="panel upcoming-panel">
+            <div class="panel-heading"><div><p class="eyebrow">ON THE HORIZON</p><h3>Your next little escape</h3></div><span class="panel-menu">···</span></div>
+            <div id="upcoming-content" class="upcoming-content"></div>
+          </section>
+          <section class="panel testing-prompt">
+            <div class="testing-art"><span>✳</span><span class="art-orbit orbit-one"></span><span class="art-orbit orbit-two"></span></div>
+            <div><p class="eyebrow">HELP SHAPE MORROW</p><h3>Got 3 minutes to wander?</h3><p>Try a few quick tasks and tell us what felt good (or not).</p><button class="text-link" data-route="testing">Take the prototype test <span>→</span></button></div>
+          </section>
+        </div>
+        <footer class="page-footer"><span>© 2025 MORROW TRAVEL CO.</span><span>MADE FOR THE IN-BETWEEN</span><button data-action="about">A little about us ↗</button></footer>
+      </section>
+
+      <section class="view" id="view-explore" aria-labelledby="explore-title">
+        <div class="page-intro"><p class="eyebrow"><span class="eyebrow-dot"></span> THE GOOD KIND OF GETTING LOST</p><h1 id="explore-title">Find your <em>somewhere.</em></h1><p>Not a checklist. Not a crowded itinerary. Just the right place for right now.</p></div>
+        <div class="search-panel">
+          <label class="search-field"><span class="search-symbol">⌕</span><span class="sr-only">Search places</span><input id="place-search" type="search" placeholder="Try “coast”, “quiet”, or somewhere you love" autocomplete="off"></label>
+          <label class="filter-field"><span>✳</span><select id="type-filter" aria-label="Filter by escape type"><option value="all">All escapes</option><option value="Coast">Coastal quiet</option><option value="Cabin">Cabin country</option><option value="City">City breaks</option><option value="Nature">Out in nature</option></select></label>
+          <button class="button button-dark search-submit" data-action="search">Find places <span class="button-arrow">↗</span></button>
+        </div>
+        <div class="advanced-filters">
+          <label>Max budget / night <select id="budget-filter"><option value="all">Any budget</option><option value="150">Up to $150</option><option value="200">Up to $200</option><option value="250">Up to $250</option></select></label>
+          <label>Weekend length <select id="duration-filter"><option value="all">Any duration</option><option value="2">2 nights</option><option value="3">3 nights</option></select></label>
+          <label>Travel mood <select id="mood-filter"><option value="all">Any mood</option><option value="Nature">Nature & mountains</option><option value="Coast">Beaches & romance</option><option value="City">History & culture</option><option value="Family">Family friendly</option><option value="Adventure">Adventure</option></select></label>
+          <label>Adventure level <select id="adventure-filter"><option value="all">Any level</option><option value="1">Easy</option><option value="2">Gentle</option><option value="3">Moderate</option><option value="4">Adventurous</option></select></label>
+          <label>Sort by <select id="sort-filter"><option value="curated">Curated</option><option value="popular">Popularity</option><option value="budget">Lowest budget</option><option value="name">Name</option></select></label>
+          <button class="text-link" data-action="clear-search">Clear all filters</button>
+          <button class="button button-outline compare-trigger" data-route="compare">Compare selected <span id="compare-count">0</span></button>
+        </div>
+        <div class="results-heading"><div><p class="eyebrow">A FEW PLACES WE LOVE</p><h2 id="results-title">Escapes worth the detour <span id="results-count"></span></h2></div><button class="sort-control" data-action="sort">Curated for you <span>⌄</span></button></div>
+        <div id="destination-grid" class="destination-grid"></div>
+        <div class="empty-state hidden" id="empty-results"><span>⌕</span><h3>No escapes found just yet.</h3><p>Try another search or choose a different kind of weekend.</p><button class="text-link" data-action="clear-search">Clear your filters →</button></div>
+        <footer class="page-footer"><span>© 2025 MORROW TRAVEL CO.</span><span>MADE FOR THE IN-BETWEEN</span><button data-action="about">A little about us ↗</button></footer>
+      </section>
+
+      <section class="view" id="view-saved" aria-labelledby="saved-title">
+        <div class="page-intro"><p class="eyebrow"><span class="eyebrow-dot"></span> YOUR LITTLE LIST</p><h1>Keep the <em>good ones.</em></h1><p>All the places you want to come back to, gathered in one spot.</p></div>
+        <div class="results-heading saved-heading"><div><p class="eyebrow">THE PLACES THAT STAY WITH YOU</p><h2 id="saved-title">Saved escapes <span id="saved-page-count"></span></h2></div><button class="button button-outline" data-route="explore">Find more places <span class="button-arrow">↗</span></button></div>
+        <div id="saved-grid" class="destination-grid"></div>
+        <div class="empty-state hidden" id="empty-saved"><span>♡</span><h3>Your list is a blank canvas.</h3><p>Save a place that catches your eye and it will find a home here.</p><button class="button button-dark" data-route="explore">Explore escapes <span class="button-arrow">↗</span></button></div>
+        <footer class="page-footer"><span>© 2025 MORROW TRAVEL CO.</span><span>MADE FOR THE IN-BETWEEN</span><button data-action="about">A little about us ↗</button></footer>
+      </section>
+
+      <section class="view" id="view-trips" aria-labelledby="trips-title">
+        <div class="page-intro"><p class="eyebrow"><span class="eyebrow-dot"></span> YOUR NEXT CHAPTERS</p><h1>Plans with <em>room to breathe.</em></h1><p>Keep your trips, little details, and day-by-day plans all in one place.</p></div>
+        <div class="results-heading"><div><p class="eyebrow">YOUR JOURNEYS</p><h2 id="trips-title">Trip plans <span id="trip-list-count"></span></h2></div><button class="button button-dark" data-action="new-trip">Plan a new escape <span class="button-arrow">↗</span></button></div>
+        <div id="trip-list" class="trip-list"></div>
+        <div class="empty-state hidden" id="empty-trips"><span>▣</span><h3>Your next trip starts with a place.</h3><p>Pick a destination, choose your dates, and make some room.</p><button class="button button-dark" data-action="new-trip">Start planning <span class="button-arrow">↗</span></button></div>
+      </section>
+
+      <section class="view" id="view-planner" aria-labelledby="planner-title">
+        <div class="page-intro"><p class="eyebrow"><span class="eyebrow-dot"></span> A TRIP, MADE YOURS</p><h1 id="planner-title">Let's make a <em>little plan.</em></h1><p>Choose the details that matter. We’ll shape a thoughtful starting point around them.</p></div>
+        <form class="panel planner-form" id="planner-form">
+          <input type="hidden" name="tripId">
+          <label>Destination <select name="destination" id="planner-destination" required></select></label>
+          <label>Departure <input type="date" name="departure" required></label>
+          <label>Return <input type="date" name="return" required></label>
+          <label>Travellers <input type="number" name="travelers" min="1" max="20" value="2" required></label>
+          <label>Getting there <select name="transport"><option>Car</option><option>Train</option><option>Flight</option><option>Bus</option><option>Ferry</option></select></label>
+          <label>Estimated total budget ($) <input type="number" name="budget" min="1" step="1" placeholder="1200" required></label>
+          <fieldset class="preference-field"><legend>What sounds like your kind of trip?</legend>
+            <label><input type="checkbox" name="preferences" value="Slow mornings"> Slow mornings</label>
+            <label><input type="checkbox" name="preferences" value="Local food"> Local food</label>
+            <label><input type="checkbox" name="preferences" value="Outdoor time"> Outdoor time</label>
+            <label><input type="checkbox" name="preferences" value="Culture & history"> Culture & history</label>
+            <label><input type="checkbox" name="preferences" value="A little adventure"> A little adventure</label>
+          </fieldset>
+          <p class="form-error hidden" id="planner-error" role="alert"></p>
+          <div class="planner-actions"><button type="button" class="button button-outline" data-route="trips">Cancel</button><button type="submit" class="button button-dark">Generate my trip plan <span class="button-arrow">↗</span></button></div>
+        </form>
+      </section>
+
+      <section class="view" id="view-trip" aria-labelledby="trip-detail-title">
+        <div id="trip-detail"></div>
+      </section>
+
+      <section class="view" id="view-compare" aria-labelledby="compare-title">
+        <div class="page-intro"><p class="eyebrow"><span class="eyebrow-dot"></span> THE LOVELY LITTLE SHORTLIST</p><h1>Good options, <em>side by side.</em></h1><p>Choose up to three places and see what makes each one feel different.</p></div>
+        <div class="compare-picker panel"><label for="compare-picker">Add a place</label><select id="compare-picker"></select><button class="button button-dark" data-action="add-compare">Add to comparison <span class="button-arrow">↗</span></button><button class="text-link" data-action="clear-compare">Clear list</button></div>
+        <div id="comparison-table" class="comparison-table"></div>
+        <div class="empty-state hidden" id="empty-compare"><span>⇄</span><h3>A good decision starts with a shortlist.</h3><p>Add a couple of destinations to compare budget, timing, and travel style.</p><button class="button button-dark" data-route="explore">Browse destinations <span class="button-arrow">↗</span></button></div>
+      </section>
+
+      <section class="view" id="view-assistant" aria-labelledby="assistant-title">
+        <div class="page-intro"><p class="eyebrow"><span class="eyebrow-dot"></span> A LOCAL-FIRST TRAVEL COMPANION</p><h1 id="assistant-title">Ask about your <em>next escape.</em></h1><p>Connect an Ollama model on this device, or use transparent rule-based suggestions from Morrow's sample catalogue.</p></div>
+        <div class="assistant-layout">
+          <section class="panel assistant-panel">
+            <div class="assistant-toolbar"><div><span class="status-dot" id="assistant-status-dot"></span><strong id="assistant-mode">Local suggestions</strong><small id="assistant-status">Ollama is optional. Local responses are not AI-generated.</small></div><button class="button button-outline" data-action="clear-chat">Clear conversation</button></div>
+            <div class="assistant-suggestions" aria-label="Suggested questions">
+              <button class="prompt-chip" data-prompt="Suggest a nature weekend under my preferred budget">A nature weekend under budget</button>
+              <button class="prompt-chip" data-prompt="Compare Lisbon and Copenhagen for a short city break">Compare two city breaks</button>
+              <button class="prompt-chip" data-prompt="Build a relaxed weekend with local food and outdoor time">A relaxed food and nature trip</button>
+              <button class="prompt-chip" data-prompt="What should I pack for my next trip?">What should I pack?</button>
+            </div>
+            <div id="assistant-chat" class="assistant-chat" role="log" aria-live="polite" aria-relevant="additions"></div>
+            <form id="assistant-form" class="assistant-form"><label class="sr-only" for="assistant-input">Ask Morrow a travel question</label><textarea id="assistant-input" name="message" rows="2" maxlength="800" placeholder="Where would you like a little room to roam?" required></textarea><button class="button button-dark" type="submit">Ask Morrow <span class="button-arrow">↗</span></button></form>
+          </section>
+          <aside class="panel assistant-settings">
+            <p class="eyebrow">OPTIONAL LOCAL MODEL</p><h2>Ollama connection</h2><p>Nothing is sent unless you connect a local Ollama server. A blocked or unavailable connection falls back to local catalogue rules.</p>
+            <form id="assistant-settings-form"><label>Ollama base URL<input name="endpoint" type="url" value="http://localhost:11434" required></label><label>Model name<input name="model" value="llama3.2" maxlength="80" required></label><div class="settings-actions"><button class="button button-outline" type="button" data-action="find-ollama-models">Find local models</button><button class="button button-dark" type="submit">Save settings</button></div><p id="ollama-model-list" class="inline-status" role="status">No model connection checked.</p></form>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view" id="view-smart-plan" aria-labelledby="smart-plan-title">
+        <div class="page-intro"><p class="eyebrow"><span class="eyebrow-dot"></span> A LOCALLY GENERATED STARTING POINT</p><h1 id="smart-plan-title">A trip with <em>room to breathe.</em></h1><p>Build a day-wise outline from Morrow's sample destination catalogue. Activity and cost suggestions are estimates, not bookings or live prices.</p></div>
+        <form class="panel smart-plan-form" id="smart-plan-form">
+          <label>Starting location<input name="origin" maxlength="80" placeholder="Your city or starting point" required></label>
+          <label>Destination<select name="destination" id="smart-plan-destination" required></select></label>
+          <label>Departure<input name="departure" type="date" required></label>
+          <label>Return<input name="return" type="date" required></label>
+          <label>Travellers<input name="travelers" type="number" min="1" max="20" value="2" required></label>
+          <label>Total budget ($)<input name="budget" type="number" min="1" step="1" value="1200" required></label>
+          <label>Transportation<select name="transport"><option>Car</option><option>Train</option><option>Flight</option><option>Bus</option><option>Ferry</option></select></label>
+          <label>Trip intensity<select name="intensity"><option value="relaxed">Relaxed</option><option value="balanced" selected>Balanced</option><option value="active">Active</option></select></label>
+          <fieldset class="preference-field"><legend>Interests</legend><label><input type="checkbox" name="interests" value="Nature"> Nature</label><label><input type="checkbox" name="interests" value="Food"> Local food</label><label><input type="checkbox" name="interests" value="Culture"> Culture & history</label><label><input type="checkbox" name="interests" value="Adventure"> Adventure</label><label><input type="checkbox" name="interests" value="Family"> Family friendly</label><label><input type="checkbox" name="interests" value="Romantic"> Romantic</label></fieldset>
+          <p id="smart-plan-error" class="form-error hidden" role="alert"></p>
+          <div class="planner-actions"><button class="button button-dark" type="submit">Generate my outline <span class="button-arrow">↗</span></button></div>
+        </form>
+        <section id="smart-plan-results" class="smart-plan-results" aria-live="polite"></section>
+        <section class="saved-itineraries-section"><div class="section-heading"><div><p class="eyebrow">KEPT FOR LATER</p><h2>Saved outlines</h2></div></div><div id="saved-itineraries" class="saved-itinerary-list"></div></section>
+      </section>
+
+      <section class="view" id="view-weather" aria-labelledby="weather-title">
+        <div class="page-intro"><p class="eyebrow"><span class="eyebrow-dot"></span> FORECASTS WITH CONTEXT</p><h1 id="weather-title">A little look at the <em>weather.</em></h1><p>Open-Meteo is optional and key-free. Weather applies to each destination's approximate sample coordinate, not a verified property or route.</p></div>
+        <div class="weather-controls panel"><label for="weather-destination">Destination</label><select id="weather-destination"></select><button class="button button-dark" data-action="load-weather">Check conditions <span class="button-arrow">↗</span></button></div>
+        <div id="weather-result" class="weather-result panel"><div class="empty-state"><span>☼</span><h3>Choose a place to check its forecast.</h3><p>If the service is unreachable, Morrow will show clearly labelled sample conditions instead.</p></div></div>
+      </section>
+
+      <section class="view" id="view-map" aria-labelledby="map-title">
+        <div class="page-intro"><p class="eyebrow"><span class="eyebrow-dot"></span> OPEN MAP DATA, APPROXIMATE PLACE MARKERS</p><h1 id="map-title">See where a <em>weekend might lead.</em></h1><p>Map tiles come from OpenStreetMap. Catalogue coordinates are approximate sample locations; they are not turn-by-turn directions or verified property addresses.</p></div>
+        <div class="map-toolbar panel"><label for="map-destination">Focus on a place</label><select id="map-destination"></select><label class="map-saved-toggle"><input id="map-saved-only" type="checkbox"> Saved places only</label><button class="button button-outline" data-action="map-reset">Show all places</button></div>
+        <div id="travel-map" class="travel-map" role="application" aria-label="Interactive destination map"></div>
+        <p id="map-status" class="inline-status" role="status">Map loading…</p>
+        <section class="map-attractions panel"><div class="panel-heading"><div><p class="eyebrow">NEARBY IDEAS</p><h2>Find listed attractions</h2></div></div><p>Attraction markers are added only when OpenStreetMap returns a real search result. Search is user-triggered and may be unavailable offline.</p><button class="button button-outline" data-action="map-attractions">Locate this destination's listed attractions</button><div id="map-attraction-results"></div></section>
+      </section>
+
+      <section class="view" id="view-groups" aria-labelledby="groups-title">
+        <div class="page-intro"><p class="eyebrow"><span class="eyebrow-dot"></span> LOCAL-ONLY GROUP SIMULATION</p><h1 id="groups-title">Make a plan <em>together-ish.</em></h1><p>Groups, votes, itinerary suggestions, and expenses are saved only in this browser. There is no account, sync, or real-time collaboration.</p></div>
+        <form id="group-form" class="panel group-form"><label>Group trip name<input name="title" maxlength="80" placeholder="The long-weekend crew" required></label><label>Destination<select name="destination" id="group-destination" required></select></label><label>Group budget ($)<input name="budget" type="number" min="1" step="1" required></label><label>Participants (comma-separated)<input name="participants" maxlength="300" placeholder="Alex, Jordan" required></label><button class="button button-dark" type="submit">Create local group <span class="button-arrow">↗</span></button></form>
+        <div id="group-list" class="group-list"></div>
+      </section>
+
+      <section class="view" id="view-checklist" aria-labelledby="checklist-title">
+        <div class="page-intro"><p class="eyebrow"><span class="eyebrow-dot"></span> LITTLE THINGS, REMEMBERED</p><h1 id="checklist-title">Get ready, <em>at your pace.</em></h1><p>Checklists are stored locally for each trip and start with destination- and transport-aware suggestions.</p></div>
+        <div class="checklist-toolbar panel"><label for="checklist-trip">Trip</label><select id="checklist-trip"></select><div id="checklist-progress" class="checklist-progress"></div></div>
+        <form id="checklist-add-form" class="panel checklist-add-form"><label>New item<input name="item" maxlength="100" placeholder="Add one more thing" required></label><label>Category<select name="category"><option>Documents</option><option>Clothing</option><option>Electronics</option><option>Personal essentials</option><option>Travel accessories</option><option>Emergency essentials</option></select></label><button class="button button-dark" type="submit">Add item</button></form>
+        <div id="checklist-board" class="checklist-board"></div>
+      </section>
+
+      <section class="view" id="view-journal" aria-labelledby="journal-title">
+        <div class="page-intro"><p class="eyebrow"><span class="eyebrow-dot"></span> YOUR MEMORIES, ON YOUR DEVICE</p><h1 id="journal-title">Keep a little <em>of the journey.</em></h1><p>Journal notes and compressed photos stay in this browser. Photos are resized locally and subject to size and storage limits.</p></div>
+        <form id="journal-form" class="panel journal-form"><input type="hidden" name="entryId"><label>Memory title<input name="title" maxlength="80" required></label><label>Travel date<input name="date" type="date" required></label><label>Associated trip<select name="tripId" id="journal-trip"></select></label><label class="journal-description">A few words<textarea name="description" rows="3" maxlength="700" placeholder="What would you like to remember?"></textarea></label><label>Photo (optional, max 5 MB)<input name="photo" type="file" accept="image/*"></label><p class="inline-status" id="journal-status" role="status">Photos are compressed in your browser before saving.</p><div class="planner-actions"><button class="button button-outline hidden" id="journal-cancel-edit" type="button" data-action="cancel-journal-edit">Cancel edit</button><button class="button button-dark" type="submit">Save memory <span class="button-arrow">↗</span></button></div></form>
+        <div class="journal-toolbar"><label for="journal-search">Search memories</label><input id="journal-search" type="search" placeholder="Find a place or a moment"></div><div id="journal-list" class="journal-timeline"></div>
+      </section>
+
+      <section class="view" id="view-finance" aria-labelledby="finance-title">
+        <div class="page-intro"><p class="eyebrow"><span class="eyebrow-dot"></span> REAL TOTALS FROM YOUR TRIP RECORDS</p><h1 id="finance-title">Money, with <em>more clarity.</em></h1><p>Actuals come from stored expenses. Forward projections are labelled estimates and use your observed spend rate only when trip dates provide elapsed days.</p></div>
+        <div class="finance-toolbar panel"><label for="finance-trip">Trip</label><select id="finance-trip"></select><button class="button button-outline" data-action="export-finance">Download CSV summary</button></div>
+        <div id="finance-overview" class="finance-overview"></div>
+        <div id="finance-history" class="panel finance-history"></div>
+      </section>
+
+      <section class="view" id="view-testing" aria-labelledby="testing-title">
+        <div class="page-intro testing-intro"><p class="eyebrow"><span class="eyebrow-dot"></span> A SMALL FAVOR, A BETTER MORROW</p><h1>Help us find our <em>way.</em></h1><p>Take this little prototype for a spin. There are no wrong turns—we’re learning from all of them.</p></div>
+        <div class="testing-layout">
+          <div class="testing-main">
+            <section class="panel testing-guide">
+              <div class="guide-top"><span class="guide-icon">✳</span><div><p class="eyebrow">YOUR 3-MINUTE FIELD GUIDE</p><h2>Explore like you normally would.</h2></div></div>
+              <p>Imagine you're planning a much-needed weekend away. Use Morrow to find a place, save the one you love, and tell us how the whole thing felt. Think out loud if you like—we're all ears.</p>
+              <div class="task-list">
+                <button class="task-row" data-task="search"><span class="task-check">1</span><span><strong>Find somewhere new</strong><small>Search for a place or browse by the kind of break you need.</small></span><span class="task-action">Try it ↗</span></button>
+                <button class="task-row" data-task="save"><span class="task-check">2</span><span><strong>Keep a place for later</strong><small>Save a destination you'd genuinely want to visit.</small></span><span class="task-action">Try it ↗</span></button>
+                <button class="task-row" data-task="plan"><span class="task-check">3</span><span><strong>Make it a real plan</strong><small>Open a place and add it to your upcoming escapes.</small></span><span class="task-action">Try it ↗</span></button>
+              </div>
+            </section>
+            <section class="panel feedback-panel">
+              <div class="panel-heading"><div><p class="eyebrow">THE IMPORTANT BIT</p><h2>How did it feel?</h2></div><span class="feedback-sparkle">✳</span></div>
+              <form id="feedback-form" novalidate>
+                <fieldset class="rating-fieldset"><legend>How easy was it to find a place you'd love? <span>*</span></legend><div class="star-rating" role="radiogroup" aria-label="Rate your experience"><button type="button" class="star-button" data-rating="1" role="radio" aria-checked="false" aria-label="1 star">★</button><button type="button" class="star-button" data-rating="2" role="radio" aria-checked="false" aria-label="2 stars">★</button><button type="button" class="star-button" data-rating="3" role="radio" aria-checked="false" aria-label="3 stars">★</button><button type="button" class="star-button" data-rating="4" role="radio" aria-checked="false" aria-label="4 stars">★</button><button type="button" class="star-button" data-rating="5" role="radio" aria-checked="false" aria-label="5 stars">★</button><span id="rating-label">Choose a rating</span></div></fieldset>
+                <label class="form-label" for="feedback-comments">Anything we should know? <span>OPTIONAL</span></label>
+                <textarea id="feedback-comments" rows="4" maxlength="500" placeholder="What felt easy? What could feel a little better?"></textarea>
+                <div class="form-bottom"><span id="character-count">0 / 500</span><button type="submit" class="button button-dark">Send a little feedback <span class="button-arrow">↗</span></button></div>
+                <p class="form-error hidden" id="feedback-error" role="alert">Choose a star rating before sending your feedback.</p>
+              </form>
+            </section>
+          </div>
+          <aside class="panel feedback-summary">
+            <div class="summary-art"><span>✳</span><div></div></div>
+            <p class="eyebrow">OUR LITTLE LISTENING POST</p><h2>Every note makes a difference.</h2><p>Your feedback stays on this device and helps us make the next version a little more thoughtful.</p>
+            <div class="summary-stats"><div><strong id="average-rating">—</strong><span>AVERAGE RATING</span></div><div><strong id="feedback-total">0</strong><span>NOTES SHARED</span></div></div>
+            <div class="summary-divider"></div>
+            <div class="feedback-list-heading"><span>RECENT NOTES</span><span id="recent-count">0</span></div>
+            <div id="feedback-list" class="feedback-list"></div>
+          </aside>
+        </div>
+        <footer class="page-footer"><span>© 2025 MORROW TRAVEL CO.</span><span>MADE FOR THE IN-BETWEEN</span><button data-action="about">A little about us ↗</button></footer>
+      </section>
+    </main>
+  </div>
+
+  <nav class="mobile-nav" aria-label="Mobile navigation">
+    <button class="active" data-route="home"><span>⌂</span>Home</button>
+    <button data-route="explore"><span>⌕</span>Explore</button>
+    <button data-route="trips"><span>▣</span>Trips</button>
+    <button data-route="saved"><span>♡</span>Saved</button>
+    <button data-action="mobile-tools" aria-expanded="false" aria-controls="mobile-tools-menu"><span>•••</span>More</button>
+  </nav>
+  <div id="mobile-tools-menu" class="mobile-tools-menu" hidden>
+    <button data-route="compare">Compare places</button><button data-route="assistant">Travel assistant</button><button data-route="smart-plan">Smart itinerary</button><button data-route="weather">Weather</button><button data-route="map">Map explorer</button><button data-route="groups">Group trips</button><button data-route="checklist">Checklists</button><button data-route="journal">Travel journal</button><button data-route="finance">Money insights</button><button data-action="notifications">Notifications</button><button data-route="profile">Profile preferences</button>
+  </div>
+
+  <div class="modal-backdrop" id="modal-backdrop" aria-hidden="true">
+    <section class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="modal-close" data-action="close-modal" aria-label="Close dialog">×</button>
+      <div id="modal-content"></div>
+    </section>
+  </div>
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
+  <script src="app.js"></script>
+  <script src="morrow3.js"></script>
+</body>
+</html>
